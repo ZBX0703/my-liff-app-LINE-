@@ -1,6 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+<head><!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>織芯芯選物所 - LINE 服務</title>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+
+    <h1>✨ 織芯芯選物所 ✨</h1>
+    <div id="status">正在與 LINE 連線中...</div>
+    
+    <h2 id="userName"></h2>
+    <img id="userPicture" width="100" style="border-radius: 50%;">
+
+    <script>
+        // 2. 準備你的秘密鑰匙 (把你的 LIFF ID 貼在這裡)
+        const myLiffId = "2008785048-HrnVlYB9";
+
+        // 3. 開始初始化
+        liff.init({
+            liffId: myLiffId
+        }).then(() => {
+            // 確認使用者是否已經登入
+            if (!liff.isLoggedIn()) {
+                document.getElementById("status").innerText = "請先登入 LINE 喔！";
+                liff.login(); // 如果沒登入，就跳出登入畫面
+            } else {
+                document.getElementById("status").innerText = "✅ 連結成功！";
+                
+                // 4. 取得使用者的個人資料 (這就是你最在意的隱私資料)
+                liff.getProfile().then(profile => {
+                    document.getElementById("userName").innerText = "你好，" + profile.displayName + "！";
+                    document.getElementById("userPicture").src = profile.pictureUrl;
+                });
+            }
+        }).catch((err) => {
+            document.getElementById("status").innerText = "❌ 連線失敗：" + err;
+        });
+    </script>
+
+</body>
+</html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的第一個 LINE 服務</title>
@@ -11,4 +54,5 @@
     <p>我正在學習如何讓這個網頁跟 LINE 說話。</p>
 
     </body>
+
 </html>
