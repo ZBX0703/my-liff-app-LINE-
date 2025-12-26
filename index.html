@@ -6,7 +6,497 @@
     <title>織芯芯選物所 | LINE 數位分身</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        /* ==== 全局變數與風格 ==== */
+        /* ==== 全局變<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZBX 鉤織藝術家 | 手作溫度</title>
+    <!-- 引入細緻的中文字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6D4C41;      /* 溫潤木質棕 */
+            --accent: #FF8A65;       /* 溫暖編織橘 */
+            --bg-base: #FFF9F5;
+            --text-main: #4E342E;
+            --pink-soft: #FAD0C4;
+            --white-glass: rgba(255, 255, 255, 0.45);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px 15px;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ==== 藝術背景效果 ==== */
+        .bg-watercolor {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .splash {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(65px);
+            opacity: 0.35;
+            animation: floatSplash 25s infinite alternate ease-in-out;
+        }
+        .splash-1 { width: 60vw; height: 60vw; background: #FAD0C4; top: -15%; left: -10%; }
+        .splash-2 { width: 70vw; height: 70vw; background: #FFE0B2; bottom: -20%; right: -15%; animation-delay: -7s; }
+        .splash-3 { width: 45vw; height: 45vw; background: #FFD180; top: 25%; right: 0%; animation-delay: -12s; }
+
+        .paper-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://www.transparenttextures.com/patterns/handmade-paper.png");
+            opacity: 0.4;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @keyframes floatSplash {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 80px) scale(1.15); }
+        }
+
+        /* ==== 核心卡片容器 ==== */
+        .card-container {
+            background: var(--white-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            padding: 50px 30px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(109, 76, 65, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==== 頭像與 LOGO 結合區 ==== */
+        .identity-container {
+            position: relative;
+            width: 190px;
+            height: 190px;
+            margin: 0 auto 35px;
+        }
+
+        .avatar-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: white;
+            border: 8px solid #fff;
+            box-shadow: 0 15px 45px rgba(250, 208, 196, 0.5);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.03) saturate(1.08);
+        }
+
+       
+
+        /* 編織縫線裝飾 */
+        .identity-container::after {
+            content: '';
+            position: absolute;
+            top: -12px; left: -12px; right: -12px; bottom: -12px;
+            border: 3.5px dashed var(--accent);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: rotateSewing 50s linear infinite;
+        }
+
+        @keyframes rotateSewing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .status-dot {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 26px;
+            height: 26px;
+            background: #FF8A65;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 6;
+        }
+
+        /* ==== 文字與連結 ==== */
+        h1 {
+            margin: 0;
+            font-size: 1.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #4E342E;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: rgba(255, 138, 101, 0.12);
+            color: var(--accent);
+            padding: 7px 22px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin: 18px 0;
+            border: 1px solid rgba(255, 138, 101, 0.2);
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #8D6E63;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .links-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(109, 76, 65, 0.04);
+            border: 1.5px solid transparent;
+        }
+
+        .link-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(109, 76, 65, 0.08);
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        .link-icon {
+            width: 46px;
+            height: 46px;
+            background: #FFF3E0;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-right: 18px;
+            flex-shrink: 0;
+        }
+
+        .link-content { text-align: left; flex-grow: 1; }
+        .link-title { display: block; font-weight: 700; font-size: 1.05rem; }
+        .link-desc { display: block; font-size: 0.75rem; color: #A1887F; margin-top: 3px; }
+
+        .link-item.instagram {
+            background: linear-gradient(to right, #ffffff, #FFFBFB);
+            border-left: 8px solid #E1306C;
+        }
+        .link-item.instagram .link-icon {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+        }
+
+        .ai-card {
+            background: linear-gradient(135deg, #FFFDFB 0%, #FFF5F0 100%);
+            border-radius: 35px;
+            padding: 25px;
+            margin-top: 10px;
+            border: 2px dashed #FFD8CC;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .ai-body {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #FFEBE5;
+            border-radius: 25px;
+            padding: 18px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            background: white;
+            font-size: 0.9rem;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ai-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            align-self: flex-end;
+            box-shadow: 0 4px 15px rgba(255, 138, 101, 0.3);
+        }
+
+        .ai-reply {
+            margin-top: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            text-align: left;
+            display: none;
+            border: 1px solid #FEEAE5;
+            color: #5D4037;
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 0.8rem;
+            color: #A1887F;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 35px;
+            font-size: 1.8rem;
+        }
+        .social-icons a { text-decoration: none; opacity: 0.5; transition: 0.4s; color: #4E342E; }
+        .social-icons a:hover { opacity: 1; transform: translateY(-5px) scale(1.2); color: var(--accent); }
+
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ' .'; }
+            40% { content: ' ..'; }
+            60% { content: ' ...'; }
+            80%, 100% { content: ''; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper-overlay"></div>
+    <div class="bg-watercolor">
+        <div class="splash splash-1"></div>
+        <div class="splash splash-2"></div>
+        <div class="splash splash-3"></div>
+    </div>
+
+    <div class="card-container">
+        
+        <!-- 頭像與 LOGO 結合區域 -->
+        <div class="identity-container">
+            <div class="avatar-circle">
+                <img id="userAvatar" src="" alt="ZBX Crochet Artist Portrait" style="display: none;">
+                <div id="avatarLoader" style="font-size: 0.85rem; color: #A1887F;">畫布準備中...</div>
+            </div>
+            
+            <!-- 品牌 LOGO 作為印章結合在頭像旁 -->
+            <div class="brand-logo-seal">
+                <img src="image_bf503e.png" alt="ZBX Logo" onerror="this.parentElement.style.display='none'">
+            </div>
+            
+            <div class="status-dot" title="正在勾織創作中"></div>
+        </div>
+
+        <h1>ZBX | 鉤織藝術家</h1>
+        <div class="tag-pill">🧶 手作溫度 • 一針一線</div>
+        <p class="tagline">
+            用靈動的雙手，編織溫暖的故事。<br>
+            讓每一件織品，都溫暖你的日常角落。
+        </p>
+
+        <div class="links-stack">
+            <a href="https://www.instagram.com/zbx_crochet/" target="_blank" class="link-item instagram">
+                <div class="link-icon">📸</div>
+                <div class="link-content">
+                    <span class="link-title">Instagram 作品集</span>
+                    <span class="link-desc">查看最新鉤織日常與幕後故事</span>
+                </div>
+                <span style="color: #E1306C; font-weight: bold;">➜</span>
+            </a>
+
+            <a href="#" target="_blank" class="link-item">
+                <div class="link-icon">🧶</div>
+                <div class="link-content">
+                    <span class="link-title">專屬客製化需求</span>
+                    <span class="link-desc">挑選配色與材質，打造獨一無二的小物</span>
+                </div>
+            </a>
+
+            <a href="#" target="_blank" class="link-item">
+                <div class="link-icon">🛒</div>
+                <div class="link-content">
+                    <span class="link-title">現貨選購商城</span>
+                    <span class="link-desc">精選現成品直接下單帶回家</span>
+                </div>
+            </a>
+
+            <div class="ai-card">
+                <div class="ai-header" onclick="toggleAI()">
+                    <span>✨</span> 召喚 ZBX 鉤織小幫手 <span id="aiChevron">▼</span>
+                </div>
+                <div class="ai-body" id="aiBody" onclick="event.stopPropagation()">
+                    <textarea id="userInput" placeholder="想了解訂製或是材質建議嗎？..." rows="2"></textarea>
+                    <button class="ai-btn" id="sendBtn" onclick="askAI()">發送詢問 🧡</button>
+                    <div id="aiReply" class="ai-reply"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="social-icons">
+                <a href="#" title="Line">💬</a>
+                <a href="#" title="Facebook">📘</a>
+                <a href="#" title="Email">✉️</a>
+            </div>
+            <span>© 2025 ZBX Crochet Art. All Rights Reserved.</span>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+
+        async function loadArtisticAvatar() {
+            const avatarImg = document.getElementById('userAvatar');
+            const loader = document.getElementById('avatarLoader');
+
+            try {
+                // 精確鎖定人物形象的指令：亞洲女性、肉肉臉、大眼睛、正在鉤織
+                const promptText = "A beautiful and warm digital watercolor illustration of a friendly Asian young woman with adorable chubby cheeks and large, expressive twinkling eyes. She is actively focusing on crocheting with a wooden hook and soft pastel-colored yarn in her hands. She wears round thin-frame glasses and a cozy hand-knitted pink sweater. Artistic soft brushwork, gentle watercolor bleeds, ethereal warm lighting, high quality digital art style, white paper background";
+                
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            instances: { prompt: promptText },
+                            parameters: { sampleCount: 1 }
+                        })
+                    }
+                );
+
+                const result = await response.json();
+                if (result.predictions && result.predictions[0]) {
+                    const b64 = result.predictions[0].bytesBase64Encoded;
+                    avatarImg.src = `data:image/png;base64,${b64}`;
+                    avatarImg.style.display = 'block';
+                    loader.style.display = 'none';
+                } else {
+                    throw new Error("Generation failed");
+                }
+            } catch (e) {
+                // 如果 API 出錯，顯示一張與描述相近的高品質備案圖
+                avatarImg.src = "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&q=80&w=400";
+                avatarImg.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        }
+
+        window.onload = loadArtisticAvatar;
+
+        function toggleAI() {
+            const body = document.getElementById('aiBody');
+            const chevron = document.getElementById('aiChevron');
+            const isOpen = body.style.display === 'flex';
+            body.style.display = isOpen ? 'none' : 'flex';
+            chevron.innerText = isOpen ? '▼' : '▲';
+        }
+
+        async function askAI() {
+            const input = document.getElementById('userInput');
+            const reply = document.getElementById('aiReply');
+            const btn = document.getElementById('sendBtn');
+            const query = input.value.trim();
+
+            if (!query) return;
+
+            btn.disabled = true;
+            reply.style.display = 'block';
+            reply.innerHTML = '<span class="loading-dots">ZBX 正在為您翻找資料</span>';
+
+            try {
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: query }] }],
+                            systemInstruction: {
+                                parts: [{ text: "你是 ZBX 鉤織藝術家的助手。風格：親切、溫柔。回答請用繁體中文。請針對鉤織問題給予建議。回答需短小溫馨，多用 emoji 如 🧶✨🧡。" }]
+                            }
+                        })
+                    }
+                );
+
+                const data = await response.json();
+                reply.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，我現在有點忙，請等下再問我！";
+            } catch (err) {
+                reply.innerText = "網路訊號飛走了，請稍後再試。";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>數與風格 ==== */
         :root {
             --primary: #2D3436;
             --accent: #ff7675; /* 換成溫暖的選物色 */
@@ -249,3 +739,4 @@
     </script>
 </body>
 </html>
+
